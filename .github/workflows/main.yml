@@ -26,20 +26,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build Docker image
+      - name: Build Docker images
         run: |
-          docker build -t myapp .
+          docker build -t mydockerhubusername/backend backend/
+          docker build -t mydockerhubusername/frontend frontend/
 
       - name: Run Django tests
         run: |
-          docker run myapp python manage.py test
+          docker run mydockerhubusername/backend python manage.py test
 
       - name: Build React Native app
         run: |
-          cd myapp && npm install && npx react-native build
+          cd frontend/ && npm install && npx react-native build
 
-      - name: Publish Docker image
+      - name: Publish Docker images
         run: |
-          docker tag myapp mydockerhubusername/myapp
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push mydockerhubusername/myapp
+          docker push mydockerhubusername/backend
+          docker push mydockerhubusername/frontend
