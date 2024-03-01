@@ -1,0 +1,8 @@
+myenv/
+__pycache__/
+*.py[cod]
+*.log
+db.sqlite3
+*.pyc
+.env
+
