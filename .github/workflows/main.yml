@@ -26,9 +26,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-          - name: Build Docker image for backend
-          run: |
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/backend backend/
+      - name: Build Docker image for backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend backend/
 
       - name: Run Django tests
         run: |
