@@ -1,7 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.conf import settings
 
-class HappinesssLog(models.Model):
+class UserHappinesssLog(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date = models.DateField()
     happiness_score = models.IntegerField(
         validators=[
@@ -10,5 +12,8 @@ class HappinesssLog(models.Model):
     ])
     notes =models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['-date']
+
     def __str__(self):
-        return f"{self.date}: Score {self.happiness_score}"
+        return f"{self.user.username} - {self.date}: Score {self.happiness_score}"

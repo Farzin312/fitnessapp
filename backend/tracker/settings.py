@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     "sleep",
     "steps",
     "users",
-    "workout"
+    "workout",
+    "streak"
 ]
 
 MIDDLEWARE = [
