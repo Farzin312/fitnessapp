@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     "steps",
     "users",
     "workout",
-    "streak"
+    "streak",
+    "weight",
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

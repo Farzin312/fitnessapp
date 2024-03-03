@@ -2,12 +2,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.conf import settings
 
-class UserHappinesssLog(models.Model):
+class UserHappinessLog(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date = models.DateField()
     happiness_score = models.IntegerField(
         validators=[
-        MinValueValidator(1),
+        MinValueValidator(0),
         MaxValueValidator(100)
     ])
     notes =models.TextField(blank=True, null=True)
