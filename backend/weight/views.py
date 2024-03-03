@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import UserWeight
+from .serializers import UserWeightSerializer
 
-# Create your views here.
+class UserWeightViewSet(viewsets.ModelViewSet):
+    queryset = UserWeight.objects.all()
+    serializer_class = UserWeightSerializer

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import UserStreak, UserStreakRecord
 
-# Register your models here.
+admin.site.register(UserStreak)
+admin.site.register(UserStreakRecord)

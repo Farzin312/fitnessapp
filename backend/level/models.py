@@ -9,7 +9,7 @@ class UserLevel(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Profile - Level: {self.level}, Exp: {self.experience_points}"
 
-class Record(models.Model):
+class UserRecord(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     experience_points = models.PositiveIntegerField()
     date = models.DateField(auto_now_add=True)

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import UserLevel, UserRecord
 
-# Register your models here.
+admin.site.register(UserLevel)
+admin.site.register(UserRecord)
+
