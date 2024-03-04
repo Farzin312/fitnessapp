@@ -1,6 +1,7 @@
 from datetime import timedelta
 from django.utils import timezone
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from .models import UserStreak, UserStreakRecord
 from .serializers import UserStreakSerializer, UserStreakRecordSerializer
@@ -46,6 +47,8 @@ def get_highest_streak_records():
 class UserStreakViewSet(viewsets.ModelViewSet):
     queryset = UserStreak.objects.all()
     serializer_class = UserStreakSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def list(self, request, *args, **kwargs):
         queryset = get_highest_streak_records()
@@ -55,3 +58,5 @@ class UserStreakViewSet(viewsets.ModelViewSet):
 class UserStreakRecordViewSet(viewsets.ModelViewSet):
     queryset = UserStreakRecord.objects.all()
     serializer_class = UserStreakRecordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]

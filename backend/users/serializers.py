@@ -29,7 +29,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'secret_question', 'secret_answer', 'sex', 'age']
+        fields = ['id', 'user', 'secret_question', 'secret_answer', 'sex', 'date_of_birth']
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -49,7 +49,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.secret_question = validated_data.get('secret_question', instance.secret_question)
         instance.secret_answer = validated_data.get('secret_answer', instance.secret_answer)
         instance.sex = validated_data.get('sex', instance.sex)
-        instance.age = validated_data.get('age', instance.age)
+        instance.age = validated_data.get('date_of_birth', instance.date_of_birth)
         instance.save()
 
         user_serializer = UserSerializer(user, data=user_data, partial=True)

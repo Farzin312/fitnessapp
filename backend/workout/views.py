@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 from .models import UserBodyPart, UserWorkout
 from .serializers import UserBodyPartSerializer, UserWorkoutSerializer
 from django.db.models import Sum
@@ -10,11 +11,13 @@ class UserBodyPartViewSet(viewsets.ModelViewSet):
     queryset = UserBodyPart.objects.all()
     serializer_class = UserBodyPartSerializer
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
 class UserWorkoutViewSet(viewsets.ModelViewSet):
     queryset = UserWorkout.objects.all()
     serializer_class = UserWorkoutSerializer
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)

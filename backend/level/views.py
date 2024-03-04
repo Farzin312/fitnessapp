@@ -1,6 +1,6 @@
-from django.shortcuts import render
 from django.utils import timezone
-from rest_framework import viewsets, status
+from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import UserLevel, UserRecord
@@ -26,6 +26,8 @@ def get_ranking():
 class UserLevelViewSet(viewsets.ModelViewSet):
     queryset = UserLevel.objects.all()
     serializer_class = UserLevelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     @action(detail=False, methods=['get'])
     def top_players(self, request):
@@ -36,3 +38,5 @@ class UserLevelViewSet(viewsets.ModelViewSet):
 class UserRecordViewSet(viewsets.ModelViewSet):
     queryset = UserRecord.objects.all()
     serializer_class = UserRecordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
