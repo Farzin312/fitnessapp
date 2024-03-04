@@ -7,6 +7,7 @@ from steps import views as steps_views
 from weight import views as weight_views
 from streak import views as streak_views 
 from level import views as level_views
+from users import views as user_views
 
 router = DefaultRouter()
 router.register(r'happiness', happiness_views.UserHappinessLogViewSet)
@@ -15,8 +16,8 @@ router.register(r'steps', steps_views.UserStepsViewSet)
 router.register(r'weight', weight_views.UserWeightViewSet)
 router.register(r'streak', streak_views.UserStreakViewSet)
 router.register(r'level', level_views.UserLevelViewSet)
+router.register(r'userprofiles', user_views.UserProfileViewSet)
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path('api/', include(router.urls))
 ]

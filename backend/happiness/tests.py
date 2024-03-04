@@ -1,6 +1,4 @@
 from django.test import TestCase
-
-from django.test import TestCase
 from .models import UserHappinessLog
 from django.contrib.auth.models import User
 from datetime import date
