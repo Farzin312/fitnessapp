@@ -17,3 +17,5 @@ class UserDietLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDietLog
         fields = ['id', 'date', 'entries', 'total_calories', 'total_fat', 'total_carbs', 'total_protein']
+
+

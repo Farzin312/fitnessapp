@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     "streak",
     "weight",
     'rest_framework',
-    'rest_framework.authtoken'
-
+    'rest_framework.authtoken',
+    'django-extensions'
 ]
 
 SITE_ID = 1
