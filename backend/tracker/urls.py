@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
+from django.contrib import admin
 from happiness import views as happiness_views
 from sleep import views as sleep_views
 from steps import views as steps_views
@@ -23,6 +24,7 @@ router.register(r'userworkouts', workout_views.UserWorkoutViewSet)
 router.register(r'diet', diet_views.UserDietLogViewSet)
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'), 
 ]
