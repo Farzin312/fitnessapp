@@ -1,6 +1,7 @@
 import requests
 import os
-from ..models import UserFoodItem
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tracker.settings')
+from diet.models import UserFoodItem
 from dotenv import load_dotenv
 
 load_dotenv()

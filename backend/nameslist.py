@@ -1,12 +1,17 @@
-from ..models import UserBodyPart, UserWorkout
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tracker.settings')
+django.setup()
 
-def add_exercise(exercise_name, primary_target, secondary_targets):
+from workout.models import UserBodyPart, UserExercise
+
+def add_exercise(exercise_name, primary_target, secondary_targets, user=None):
     primary, _ = UserBodyPart.objects.get_or_create(name=primary_target)
-    workout = UserWorkout.objects.create(exercise_name=exercise_name, primary_target=primary)
+    exercise, _ = UserExercise.objects.get_or_create(name=exercise_name, primary_target=primary, is_user_added=(user is not None), user=user)
 
     for target in secondary_targets:
         secondary, _ = UserBodyPart.objects.get_or_create(name=target)
-        workout.secondary_targets.add(secondary)
+        exercise.secondary_targets.add(secondary)
 
 def populate_exercises():
     exercises = [
@@ -16,7 +21,7 @@ def populate_exercises():
         ('Overhead Press', 'Shoulders', ['Triceps']),
         ('Pull-Up', 'Back', ['Biceps']),
         ('Barbell Row', 'Back', ['Biceps']),
-        ('Dips', 'Triceps', ['Chest', 'Shoulders']),
+        ('Dips', 'Chest', ['Triceps', 'Shoulders']),
         ('Leg Press', 'Quads', ['Glutes', 'Hamstrings']),
         ('Lunges', 'Quads', ['Glutes', 'Hamstrings']),
         ('Push-Up', 'Chest', ['Triceps', 'Shoulders']),
@@ -47,7 +52,7 @@ def populate_exercises():
         ('Chin-Up', 'Back', ['Biceps']),
         ('Hip Thrust', 'Glutes', ['Hamstrings']),
         ('Box Jump', 'Quads', ['Glutes', 'Calves']),
-        ('Farmer\'s', 'Forearms', ['Shoulders', 'Traps']),
+        ('Farmer\'s Walk', 'Forearms', ['Shoulders', 'Traps']),
         ('Kettlebell Swing', 'Glutes', ['Hamstrings', 'Lower Back']),
         ('Clean and Press', 'Shoulders', ['Legs', 'Back']),
         ('Snatch', 'Shoulders', ['Legs', 'Back']),
@@ -70,7 +75,7 @@ def populate_exercises():
         ('Cable Curl', 'Biceps', []),
         ('Overhead Tricep Extension', 'Triceps', []),
         ('Tricep Kickback', 'Triceps', []),
-        ('Standing Babrell Shoulder Press', 'Shoulders', ['Triceps', 'Chest', 'Abs']),
+        ('Standing Barbell Shoulder Press', 'Shoulders', ['Triceps', 'Chest', 'Abs']),
         ('Seated Barbell Shoulder Press', 'Shoulders', ['Triceps', 'Chest']),
     ]
 

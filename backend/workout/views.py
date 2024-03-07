@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.authentication import TokenAuthentication
-from .models import UserBodyPart, UserWorkout
-from .serializers import UserBodyPartSerializer, UserWorkoutSerializer
-from django.db.models import Sum
+from .models import UserBodyPart, UserExercise, UserWorkout
+from .serializers import UserBodyPartSerializer, UserExerciseSerializer, UserWorkoutSerializer
+from django.db.models import Sum, Q
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime, timedelta
@@ -12,6 +12,19 @@ class UserBodyPartViewSet(viewsets.ModelViewSet):
     serializer_class = UserBodyPartSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [TokenAuthentication]
+
+class UserExerciseViewSet(viewsets.ModelViewSet):
+    queryset = UserExercise.objects.all()
+    serializer_class = UserExerciseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        user = self.request.user
+        return self.queryset.filter(Q(user=user) | Q(is_user_added=False))
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user, is_user_added=True)
 
 class UserWorkoutViewSet(viewsets.ModelViewSet):
     queryset = UserWorkout.objects.all()
