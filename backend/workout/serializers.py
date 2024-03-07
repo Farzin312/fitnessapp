@@ -12,4 +12,4 @@ class UserWorkoutSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserWorkout
-        fields = ['id', 'user', 'date', 'exercise_name', 'sets', 'reps', 'rpe', 'percentage_of_max', 'primary_target', 'secondary_targets']
+        fields = '__all__'

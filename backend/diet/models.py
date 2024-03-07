@@ -3,12 +3,14 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 
 class UserFoodItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     calories = models.DecimalField(max_digits=6, decimal_places=2)
     fat = models.DecimalField(max_digits=5, decimal_places=2)
     carbs = models.DecimalField(max_digits=5, decimal_places=2)
     protein = models.DecimalField(max_digits=5, decimal_places=2)
     serving_size = models.DecimalField(max_digits=5, decimal_places=2, help_text="Serving size in grams", null=True, blank=True) 
+    is_user_added = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['name']

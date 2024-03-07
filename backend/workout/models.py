@@ -14,13 +14,14 @@ class UserBodyPart(models.Model):
 class UserWorkout(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date = models.DateField()
-    exercise_name = models.CharField(max_length=100)
+    exercise_name = models.CharField(max_length=100, unique=True)
     sets = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     reps = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
     rpe = models.DecimalField(max_digits=3, decimal_places=1)
     percentage_of_max = models.DecimalField(max_digits=5, decimal_places=2)
     primary_target = models.ForeignKey(UserBodyPart, related_name='primary_target', on_delete=models.SET_NULL, null=True)
     secondary_targets = models.ManyToManyField(UserBodyPart, related_name='secondary_target', blank=True)
+    is_user_added = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-date']

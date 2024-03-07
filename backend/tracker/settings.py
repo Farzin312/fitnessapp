@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "weight",
     'rest_framework',
     'rest_framework.authtoken',
-    'django-extensions'
+    'django_extensions'
 ]
 
 SITE_ID = 1

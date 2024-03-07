@@ -4,7 +4,7 @@ from .models import UserFoodItem, UserDietLogEntry, UserDietLog
 class UserFoodItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFoodItem
-        fields = ['id', 'name', 'calories', 'fat', 'carbs', 'protein', 'serving_size']
+        fields = ['id', 'name', 'calories', 'fat', 'carbs', 'protein', 'serving_size', 'is_user_added']
 
 class UserDietLogEntrySerializer(serializers.ModelSerializer):
     class Meta:

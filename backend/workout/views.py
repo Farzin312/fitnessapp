@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.authentication import TokenAuthentication
 from .models import UserBodyPart, UserWorkout
 from .serializers import UserBodyPartSerializer, UserWorkoutSerializer
@@ -21,6 +21,12 @@ class UserWorkoutViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not instance.is_user_created:
+            return Response({'detail': 'Cannot delete a pre-existing workout.'}, status=status.HTTP_403_FORBIDDEN)
+        return super().destroy(request, *args, **kwargs)
 
     @action(detail=False, methods=['get'])
     def weekly_sets(self, request):
