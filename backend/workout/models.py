@@ -30,8 +30,11 @@ class UserWorkout(models.Model):
     exercise = models.ForeignKey(UserExercise, on_delete=models.CASCADE)
     sets = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     reps = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
-    rpe = models.DecimalField(max_digits=3, decimal_places=1)
-    percentage_of_max = models.DecimalField(max_digits=5, decimal_places=2)
+    rpe = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
+    weight = models.DecimalField(max_digits=7, decimal_places=1)
+    one_rep_max = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    one_set_max_reps = models.DecimalField(max_digits=6, decimal_places=1, blank=True, null=True)
+    percentage_of_max = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     class Meta:
         ordering = ['-date']
