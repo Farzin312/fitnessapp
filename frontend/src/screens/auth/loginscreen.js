@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './loginscreen.styles';
 
 const LoginScreen = ({ navigation }) => {
@@ -7,35 +9,45 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Implement your login logic her
+    // Implement your login logic here
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.title}>Login</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Username"
+        label="Username"
         value={username}
         onChangeText={setUsername}
+        mode="outlined"
+        style={styles.input}
       />
       <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
+        label="Password"
         value={password}
         onChangeText={setPassword}
+        mode="outlined"
+        secureTextEntry
+        style={styles.input}
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        style={styles.button}
+      >
+        Log In
+      </Button>
       <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
         <Text style={styles.link}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
         <Text style={styles.link}>Forgot Password?</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
