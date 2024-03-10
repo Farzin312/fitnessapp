@@ -1,22 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import LoginScreen from './src/screens/auth/loginscreen';
+import { View } from 'react-native';
+import tw from 'twrnc';
+import LoginScreen from './src/screens/auth/LoginScreen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <LoginScreen />
+    <View style={tw`flex-1`}>
       <StatusBar style="auto" />
+      <LoginScreen />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
