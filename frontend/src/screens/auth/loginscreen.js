@@ -1,19 +1,21 @@
 import React from 'react';
-import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
-import tw from "twrnc";
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import tw from 'twrnc';
 import { AntDesign } from '@expo/vector-icons';
-import { Input, Button } from '@rneui/themed';
+import StyledInput from '../../components/StyledInput';
+import StyledButton from '../../components/StyledButton';
+import BackgroundImage from '../../components/BackgroundImage';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   return (
     <SafeAreaView style={tw`flex-1 relative`} >
-      <Image
-        source={require("../../assets/images/cloud.png")}
-        style={tw`absolute bottom-0`}
-      />
+      <BackgroundImage />
       <View style={tw`w-full h-full z-50`} >
         <View style={tw`w-full h-[4rem] px-4`} >
-          <TouchableOpacity activeOpacity={.7} style={tw`h-[3rem] w-[3rem] bg-gray-200 rounded-full items-center justify-center`} >
+          <TouchableOpacity activeOpacity={.7} 
+            style={tw`h-[3rem] w-[3rem] bg-gray-200 rounded-full items-center justify-center`}
+            onPress={() => navigation.goBack()}
+          >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -23,21 +25,16 @@ const LoginScreen = () => {
             Welcome Back
           </Text>
           <Text style={tw`text-[1.1rem] text-gray-700`}>
-            Enter Your Username & Password
+            Enter Your Username or Email & Password
           </Text>
         </View>
 
         <View style={tw`w-full mt-[6rem] px-4`} >
-          <Input 
-            containerStyle={tw`w-full my-4`}
-            inputContainerStyle={tw`py-2`}
-            placeholder='Username'
+          <StyledInput
+            placeholder='Username or Email'
             keyboardType='default'
           />
-
-          <Input 
-            containerStyle={tw`w-full my-4`}
-            inputContainerStyle={tw`py-2`}
+          <StyledInput
             placeholder='Password'
             keyboardType='default'
             secureTextEntry={true}
@@ -45,11 +42,10 @@ const LoginScreen = () => {
         </View>
 
         <View style={tw`w-full items-center`} >
-          <Button 
-            title={"LOGIN"}
-            buttonStyle={tw`rounded-100 py-3 w-[15rem] mt-4 bg-black text-white`}
+          <StyledButton
+            title="LOGIN"
+            onPress={() => {/* Handle login */}}
           />
-
           <Text style={tw`mt-4 text-gray-600`} >Forgotten Password</Text>
           <Text style={tw`mt-4 text-gray-600`} >Or Create a New Account</Text>
         </View>

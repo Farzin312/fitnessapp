@@ -1,13 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
-import tw from 'twrnc';
-import LoginScreen from './src/screens/auth/LoginScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomePage from './src/screens/home/homescreen';
+import LoginScreen from './src/screens/auth/loginscreen';
+import RegisterScreen from './src/screens/auth/registrationscreen';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={tw`flex-1`}>
-      <StatusBar style="auto" />
-      <LoginScreen />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="HomePage">
+        <Stack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
