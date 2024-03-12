@@ -41,13 +41,14 @@ const LoginScreen = ({navigation}) => {
           />
         </View>
 
-        <View style={tw`w-full items-center`} >
-          <StyledButton
-            title="LOGIN"
-            onPress={() => {/* Handle login */}}
-          />
-          <Text style={tw`mt-4 text-gray-600`} >Forgotten Password</Text>
-          <Text style={tw`mt-4 text-gray-600`} >Or Create a New Account</Text>
+        <View style={tw`w-full items-center`}>
+          <StyledButton title="LOGIN" onPress={() => {/* Handle login */}} />
+          <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen')}>
+          <Text style={tw`mt-4 text-gray-600`}>Forgotten Password</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+            <Text style={tw`mt-4 text-gray-600`}>Or Create a New Account</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

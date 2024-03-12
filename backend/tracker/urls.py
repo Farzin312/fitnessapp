@@ -11,6 +11,7 @@ from level import views as level_views
 from users import views as user_views
 from workout import views as workout_views
 from diet import views as diet_views
+from . import views
 
 router = DefaultRouter()
 router.register(r'happiness', happiness_views.UserHappinessLogViewSet)
@@ -27,4 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'), 
+    path('password-reset-confirm/<int:user_id>/<str:token>/', views.password_reset_confirm, name='password_reset_confirm')
 ]

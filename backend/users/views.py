@@ -1,5 +1,4 @@
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -69,3 +68,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Email or phone number not verified'}, status=status.HTTP_400_BAD_REQUEST)
         user_profile.user.delete()
         return Response({'message': 'Account deleted'}, status=status.HTTP_204_NO_CONTENT)
+        
+   

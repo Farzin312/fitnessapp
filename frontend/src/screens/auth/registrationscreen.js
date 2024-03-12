@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, ScrollView, TextInput } from 'react-native';
 import tw from 'twrnc';
 import { AntDesign } from '@expo/vector-icons';
-import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
 import BackgroundImage from '../../components/BackgroundImage';
+import StyledPicker from '../../components/StyledPicker';
 
 const RegisterScreen = ({ navigation }) => {
     const [date, setDate] = useState(new Date());
@@ -66,16 +66,15 @@ const RegisterScreen = ({ navigation }) => {
                                 onChange={onChange}
                             />
                         )}
-                        <RNPickerSelect
+                        <StyledPicker
                             onValueChange={(value) => console.log(value)}
                             items={[
                                 { label: 'Male', value: 'male' },
                                 { label: 'Female', value: 'female' },
                             ]}
                             placeholder={{ label: 'Select your Biological Sex', value: null }}
-                            style={{ inputAndroid: { color: 'black' } }}
                         />
-                        <RNPickerSelect
+                        <StyledPicker
                             onValueChange={(value) => console.log(value)}
                             items={[
                                 { label: 'What is your mother\'s maiden name?', value: 'maiden_name' },
@@ -85,11 +84,15 @@ const RegisterScreen = ({ navigation }) => {
                                 { label: 'In what city were you born?', value: 'birth_city' },
                             ]}
                             placeholder={{ label: 'Select a Secret Question', value: null }}
-                            style={{ inputAndroid: { color: 'black' } }}
                         />
                         <StyledInput placeholder="Answer" keyboardType="default" />
                         <View style={tw`w-full items-center mt-4`}>
                             <StyledButton title="REGISTER" onPress={() => {/* Handle registration */}} />
+                        </View>
+                        <View style={tw`w-full items-center mt-4`}>
+                        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')} style={tw`mt-4`}>
+                            <Text style={tw`text-gray-600`}>Already have an account? Login</Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
                 </View>
