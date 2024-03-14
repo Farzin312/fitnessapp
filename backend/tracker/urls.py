@@ -27,6 +27,8 @@ router.register(r'diet', diet_views.UserDietLogViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('login/', user_views.LoginAPIView.as_view(), name='login'),
+    path('password-reset/', views.password_reset_request, name='password_reset'),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'), 
     path('password-reset-confirm/<int:user_id>/<str:token>/', views.password_reset_confirm, name='password_reset_confirm')
 ]

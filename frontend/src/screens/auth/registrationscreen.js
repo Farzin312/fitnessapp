@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, ScrollView, TextInput } from 'react-native';
 import tw from 'twrnc';
+import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import StyledInput from '../../components/StyledInput';
@@ -13,12 +14,58 @@ const RegisterScreen = ({ navigation }) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [formattedDate, setFormattedDate] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [sex, setSex] = useState('');
+    const [secretQuestion, setSecretQuestion] = useState('');
+    const [secretAnswer, setSecretAnswer] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const onChange = (_, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(false);
         setDate(currentDate);
         setFormattedDate(currentDate.toLocaleDateString());
+    };
+    
+    const handleRegister = async () => {
+        if (!username || !password || !confirmPassword || !email || !phoneNumber || !sex || !secretQuestion || !secretAnswer) {
+            setErrorMessage('Please fill out all fields');
+            return;
+        }
+    
+        if (password !== confirmPassword) {
+            setErrorMessage('Passwords do not match');
+            return;
+        }
+    
+        const convertDateFormat = (date) => {
+            const [month, day, year] = date.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        };
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/userprofiles/', {
+                username: username,
+                password: password,
+                email: email,
+                phone_number: phoneNumber,
+                secret_question: secretQuestion,
+                secret_answer: secretAnswer,
+                sex: sex,
+                date_of_birth: convertDateFormat(formattedDate),
+            });
+    
+            if (response.status === 201) {
+                setErrorMessage('')
+                navigation.navigate('LoginScreen');
+            }
+        } catch (error) {
+            setErrorMessage('Failed to create account')
+        }
     };
 
     return (
@@ -42,11 +89,11 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
 
                     <View style={tw`w-full mt-6`}>
-                        <StyledInput placeholder="Username" keyboardType="default" />
-                        <StyledInput placeholder="Password" keyboardType="default" secureTextEntry={true} />
-                        <StyledInput placeholder="Confirm Password" keyboardType="default" secureTextEntry={true} />
-                        <StyledInput placeholder="Email" keyboardType="email-address" />
-                        <StyledInput placeholder="Phone Number" keyboardType="numeric" />
+                        <StyledInput placeholder="Username" keyboardType="default" value={username} onChangeText={setUsername} />
+                        <StyledInput placeholder="Password" keyboardType="default" secureTextEntry={true} value={password} onChangeText={setPassword}/>
+                        <StyledInput placeholder="Confirm Password" keyboardType="default" secureTextEntry={true} value={confirmPassword} onChangeText={setConfirmPassword} />
+                        <StyledInput placeholder="Email" keyboardType="email-address" value={email} onChangeText={setEmail}/>
+                        <StyledInput placeholder="Phone Number" keyboardType="numeric" value={phoneNumber} onChangeText={setPhoneNumber}/>
                         <TextInput
                             placeholder="Date of Birth (MM/DD/YYYY)"
                             value={formattedDate}
@@ -67,7 +114,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
                         )}
                         <StyledPicker
-                            onValueChange={(value) => console.log(value)}
+                            onValueChange= {setSex}
                             items={[
                                 { label: 'Male', value: 'male' },
                                 { label: 'Female', value: 'female' },
@@ -75,7 +122,7 @@ const RegisterScreen = ({ navigation }) => {
                             placeholder={{ label: 'Select your Biological Sex', value: null }}
                         />
                         <StyledPicker
-                            onValueChange={(value) => console.log(value)}
+                            onValueChange={setSecretQuestion}
                             items={[
                                 { label: 'What is your mother\'s maiden name?', value: 'maiden_name' },
                                 { label: 'What was the name of your first pet?', value: 'first_pet' },
@@ -85,9 +132,10 @@ const RegisterScreen = ({ navigation }) => {
                             ]}
                             placeholder={{ label: 'Select a Secret Question', value: null }}
                         />
-                        <StyledInput placeholder="Answer" keyboardType="default" />
+                        <StyledInput placeholder="Answer" keyboardType="default" value={secretAnswer} onChangeText={setSecretAnswer}/>
                         <View style={tw`w-full items-center mt-4`}>
-                            <StyledButton title="REGISTER" onPress={() => {/* Handle registration */}} />
+                        {errorMessage ? <Text style={tw`text-red-500 mb-4`}>{errorMessage}</Text> : null}
+                            <StyledButton title="REGISTER" onPress= {handleRegister} />
                         </View>
                         <View style={tw`w-full items-center mt-4`}>
                         <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')} style={tw`mt-4`}>

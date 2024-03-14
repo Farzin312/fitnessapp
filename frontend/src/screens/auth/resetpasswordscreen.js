@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View, Alert } from 'react-native';
 import tw from 'twrnc';
+import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
@@ -8,10 +9,25 @@ import BackgroundImage from '../../components/BackgroundImage';
 
 const ResetPasswordScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleResetPassword = () => {
-        // Call your API to reset the password
-        // For example: resetPassword(email)
+    const handleResetPassword = async () => {
+        if (!email) {
+            setErrorMessage('Please enter an email');
+            return;
+        }
+    
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/password-reset/', {
+                email: email,
+            });
+    
+            if (response.status === 200) {
+                Alert.alert('Success', 'Reset link sent. Please check your email.');
+            }
+        } catch (error) {
+            setErrorMessage('Failed to Send Reset Request');
+        }
     };
 
     return (
@@ -44,6 +60,7 @@ const ResetPasswordScreen = ({ navigation }) => {
                 </View>
 
                 <View style={tw`w-full items-center`} >
+                    {errorMessage? <Text style={tw`mt-4 text-red-500`}>{errorMessage}</Text> : null}
                     <StyledButton title="SEND RESET LINK" onPress={handleResetPassword} />
                 </View>
             </View>

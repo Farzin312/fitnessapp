@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
+import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
 import BackgroundImage from '../../components/BackgroundImage';
 
 const LoginScreen = ({navigation}) => {
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    
+    const handleLogin = async () => {
+        try {
+        const response = await axios.post('http://127.0.0.1:8000/login/', 
+        {
+            username: username,
+            password: password
+        });
+        const token = response.data.token;
+    }  catch (error) {
+        if (error.response && error.response.status === 400) {
+            setErrorMessage('Invalid username or password.');
+        } else {
+            setErrorMessage('An error occurred. Please try again.');
+        }
+    }
+};
+
   return (
     <SafeAreaView style={tw`flex-1 relative`} >
       <BackgroundImage />
@@ -33,16 +56,21 @@ const LoginScreen = ({navigation}) => {
           <StyledInput
             placeholder='Username or Email'
             keyboardType='default'
+            value={username}
+            onChangeText={setUsername}
           />
           <StyledInput
             placeholder='Password'
             keyboardType='default'
             secureTextEntry={true}
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
 
         <View style={tw`w-full items-center`}>
-          <StyledButton title="LOGIN" onPress={() => {/* Handle login */}} />
+          <StyledButton title="LOGIN" onPress= {handleLogin} />
+          {errorMessage ? <Text style={tw`mt-4 text-red-500`}>{errorMessage}</Text> : null}
           <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen')}>
           <Text style={tw`mt-4 text-gray-600`}>Forgotten Password</Text>
           </TouchableOpacity>

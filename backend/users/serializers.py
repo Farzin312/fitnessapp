@@ -24,6 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
@@ -41,7 +42,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError(user_serializer.errors)
 
-
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user')
         user = instance.user
@@ -49,7 +49,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.secret_question = validated_data.get('secret_question', instance.secret_question)
         instance.secret_answer = validated_data.get('secret_answer', instance.secret_answer)
         instance.sex = validated_data.get('sex', instance.sex)
-        instance.age = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
         instance.save()
 
         user_serializer = UserSerializer(user, data=user_data, partial=True)
@@ -57,6 +57,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             user_serializer.save()
 
         return instance
+
 
 class PasswordResetSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True)
