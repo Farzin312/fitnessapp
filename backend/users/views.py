@@ -3,9 +3,10 @@ from rest_framework.decorators import action
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
 from .models import UserProfile
 from .serializers import UserSerializer, UserProfileSerializer
 
@@ -82,11 +83,26 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         user_profile.user.delete()
         return Response({'message': 'Account deleted'}, status=status.HTTP_204_NO_CONTENT)
         
+
+class EmailOrUsernameModelBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        if '@' in username:
+            kwargs = {'email': username}
+        else:
+            kwargs = {'username': username}
+        try:
+            user = UserModel.objects.get(**kwargs)
+            if user.check_password(password):
+                return user
+        except UserModel.DoesNotExist:
+            return None
+
 class LoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
+        login_input = request.data.get('login_input')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
+        user = EmailOrUsernameModelBackend().authenticate(request, username=login_input, password=password)
         if user:
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key}, status=status.HTTP_200_OK)

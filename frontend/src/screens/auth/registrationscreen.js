@@ -89,15 +89,15 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
 
                     <View style={tw`w-full mt-6`}>
-                        <StyledInput placeholder="Username" keyboardType="default" value={username} onChangeText={setUsername} />
-                        <StyledInput placeholder="Password" keyboardType="default" secureTextEntry={true} value={password} onChangeText={setPassword}/>
-                        <StyledInput placeholder="Confirm Password" keyboardType="default" secureTextEntry={true} value={confirmPassword} onChangeText={setConfirmPassword} />
-                        <StyledInput placeholder="Email" keyboardType="email-address" value={email} onChangeText={setEmail}/>
-                        <StyledInput placeholder="Phone Number" keyboardType="numeric" value={phoneNumber} onChangeText={setPhoneNumber}/>
+                        <StyledInput placeholder="Username" keyboardType="default" value={username} onChangeText={(text) => { setUsername(text); setErrorMessage(''); }} />
+                        <StyledInput placeholder="Password" keyboardType="default" secureTextEntry={true} value={password} onChangeText={(text) => { setPassword(text); setErrorMessage(''); }}/>
+                        <StyledInput placeholder="Confirm Password" keyboardType="default" secureTextEntry={true} value={confirmPassword} onChangeText={(text) => { setConfirmPassword(text); setErrorMessage(''); }} />
+                        <StyledInput placeholder="Email" keyboardType="email-address" value={email} onChangeText={(text) => { setEmail(text); setErrorMessage(''); }}/>
+                        <StyledInput placeholder="Phone Number" keyboardType="numeric" value={phoneNumber} onChangeText={(text) => { setPhoneNumber(text); setErrorMessage(''); }}/>
                         <TextInput
                             placeholder="Date of Birth (MM/DD/YYYY)"
                             value={formattedDate}
-                            onChangeText={setFormattedDate}
+                            onChangeText={(text) => { setFormattedDate(text); setErrorMessage(''); }}
                             style={tw`bg-gray-200 p-3 rounded-lg mb-4`}
                         />
                         <TouchableOpacity onPress={() => setShow(true)} style={tw`bg-gray-200 p-3 rounded-lg mb-4`}>
@@ -110,11 +110,11 @@ const RegisterScreen = ({ navigation }) => {
                                 mode={mode}
                                 is24Hour={true}
                                 display="default"
-                                onChange={onChange}
+                                onChange={(event, selectedDate) => { onChange(event, selectedDate); setErrorMessage(''); }}
                             />
                         )}
                         <StyledPicker
-                            onValueChange= {setSex}
+                            onValueChange= {(value) => { setSex(value); setErrorMessage(''); }}
                             items={[
                                 { label: 'Male', value: 'male' },
                                 { label: 'Female', value: 'female' },
@@ -122,7 +122,10 @@ const RegisterScreen = ({ navigation }) => {
                             placeholder={{ label: 'Select your Biological Sex', value: null }}
                         />
                         <StyledPicker
-                            onValueChange={setSecretQuestion}
+                            onValueChange={(value) => {
+                                setSecretQuestion(value);
+                                setErrorMessage('');
+                            }}
                             items={[
                                 { label: 'What is your mother\'s maiden name?', value: 'maiden_name' },
                                 { label: 'What was the name of your first pet?', value: 'first_pet' },
@@ -132,7 +135,7 @@ const RegisterScreen = ({ navigation }) => {
                             ]}
                             placeholder={{ label: 'Select a Secret Question', value: null }}
                         />
-                        <StyledInput placeholder="Answer" keyboardType="default" value={secretAnswer} onChangeText={setSecretAnswer}/>
+                        <StyledInput placeholder="Answer" keyboardType="default" value={secretAnswer} onChangeText={(text) => {setSecretAnswer(text); setErrorMessage(''); }}/>
                         <View style={tw`w-full items-center mt-4`}>
                         {errorMessage ? <Text style={tw`text-red-500 mb-4`}>{errorMessage}</Text> : null}
                             <StyledButton title="REGISTER" onPress= {handleRegister} />
