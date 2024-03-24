@@ -15,24 +15,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
 
     def create(self, request, *args, **kwargs):
-        user_serializer = UserSerializer(data=request.data)
-        if user_serializer.is_valid():
-            user = user_serializer.save()
-            profile_data = {
-                'secret_question': request.data.get('secret_question'),
-                'secret_answer': request.data.get('secret_answer'),
-                'sex': request.data.get('sex'),
-                'date_of_birth': request.data.get('date_of_birth'),
-            }
-            profile_serializer = UserProfileSerializer(data=profile_data)
-            if profile_serializer.is_valid():
-                profile_serializer.save(user=user)
-                return Response(profile_serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                user.delete() 
-                return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
     def update(self, request, *args, **kwargs):
@@ -107,3 +95,12 @@ class LoginAPIView(APIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+class CurrentUserViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        user = request.user
+        user_data = UserSerializer(user).data
+        profile_data = UserProfileSerializer(user.profile).data if hasattr(user, 'profile') else {}
+        return Response({**user_data, **profile_data})

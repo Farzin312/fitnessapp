@@ -53,17 +53,15 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend'
 )
 
-EMAIL_BACKENDS = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL') == 'True'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_REQUIRED = 'mandatory'
-ACCOUNT_EMAIL_REQUIRED = 'username_email'
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -86,7 +84,7 @@ ROOT_URLCONF = "tracker.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'tracker/templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

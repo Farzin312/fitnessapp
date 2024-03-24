@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View, ScrollView, TextInput } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View, ScrollView, TextInput, Alert } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
@@ -44,29 +44,59 @@ const RegisterScreen = ({ navigation }) => {
     
         const convertDateFormat = (date) => {
             const [month, day, year] = date.split('/');
-            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+            let fullYear = year;
+        
+            if (year.length === 2) {
+                fullYear = year.startsWith('9') ? `19${year}` : `20${year}`;
+            }
+        
+            const formattedDay = day.padStart(2, '0');
+            if (parseInt(formattedDay) < 1 || parseInt(formattedDay) > 31) {
+                throw new Error('Invalid day in date');
+            }
+        
+            return `${fullYear}-${month.padStart(2, '0')}-${formattedDay}`;
         };
-
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/api/userprofiles/', {
+    
+        const payload = {
+            user: {
                 username: username,
                 password: password,
                 email: email,
                 phone_number: phoneNumber,
-                secret_question: secretQuestion,
-                secret_answer: secretAnswer,
-                sex: sex,
-                date_of_birth: convertDateFormat(formattedDate),
-            });
+            },
+            secret_question: secretQuestion,
+            secret_answer: secretAnswer,
+            sex: sex,
+            date_of_birth: convertDateFormat(formattedDate),
+        };
+    
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/userprofiles/', payload);
     
             if (response.status === 201) {
-                setErrorMessage('')
+                setErrorMessage('');
+                Alert.alert('Successfully created user Account');
                 navigation.navigate('LoginScreen');
             }
         } catch (error) {
-            setErrorMessage('Failed to create account')
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+                setErrorMessage(error.response.data.detail || 'Failed to create account');
+            } else if (error.request) {
+                console.log(error.request);
+                setErrorMessage('No response from server');
+            } else {
+                console.log('Error', error.message);
+                setErrorMessage('Error in request setup');
+            }
         }
     };
+    
+         
+      
 
     return (
         <SafeAreaView style={tw`flex-1 relative`}>

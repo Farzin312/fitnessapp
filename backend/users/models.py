@@ -27,6 +27,7 @@ class CustomUser(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    name = models.CharField(max_length=100, blank=True, null=True)
     secret_question = models.CharField(max_length=200)
     secret_answer = models.CharField(max_length=200)
     sex = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')])

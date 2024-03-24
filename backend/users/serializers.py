@@ -29,7 +29,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'secret_question', 'secret_answer', 'sex', 'date_of_birth']
+        fields = ['id', 'user', 'name', 'secret_question', 'secret_answer', 'sex', 'date_of_birth']
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -49,6 +49,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.secret_answer = validated_data.get('secret_answer', instance.secret_answer)
         instance.sex = validated_data.get('sex', instance.sex)
         instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance.name = validated_data.get('name', instance.name)
         instance.save()
 
         user_serializer = UserSerializer(user, data=user_data, partial=True)
@@ -57,6 +58,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
         return instance
 
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
 
 class PasswordResetSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True)

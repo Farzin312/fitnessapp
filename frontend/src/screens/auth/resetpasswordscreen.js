@@ -55,8 +55,7 @@ const ResetPasswordScreen = ({ navigation }) => {
                         placeholder="Email"
                         keyboardType="email-address"
                         value={email}
-                        onChangeText={setEmail}
-                    />
+                        onChangeText={(text) => {setEmail(text) ; setErrorMessage(''); }} /> 
                 </View>
 
                 <View style={tw`w-full items-center`} >
