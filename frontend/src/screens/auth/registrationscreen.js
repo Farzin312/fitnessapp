@@ -72,7 +72,7 @@ const RegisterScreen = ({ navigation }) => {
         };
     
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/userprofiles/', payload);
+            const response = await axios.post('http://127.0.0.1:8000/userprofiles/', payload);
     
             if (response.status === 201) {
                 setErrorMessage('');

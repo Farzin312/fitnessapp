@@ -5,7 +5,7 @@ import HomePage from './src/screens/home/homescreen';
 import LoginScreen from './src/screens/auth/loginscreen';
 import MainPage from './src/screens/home/mainpage';
 import RegisterScreen from './src/screens/auth/registrationscreen';
-import ResetPasswordScreen from './src/screens/auth/resetpasswordscreen';
+import ResetPasswordRequestScreen from './src/screens/auth/resetpasswordrequestscreen';
 
 
 const Stack = createStackNavigator();
@@ -18,7 +18,7 @@ export default function App() {
         <Stack.Screen name="MainPage" component={MainPage} options={{ headerShown: false }} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ResetPasswordRequestScreen" component={ResetPasswordRequestScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

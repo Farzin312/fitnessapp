@@ -7,7 +7,7 @@ import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
 import BackgroundImage from '../../components/BackgroundImage';
 
-const ResetPasswordScreen = ({ navigation }) => {
+const ResetPasswordRequestScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -67,4 +67,4 @@ const ResetPasswordScreen = ({ navigation }) => {
     );
 };
 
-export default ResetPasswordScreen;
+export default ResetPasswordRequestScreen;

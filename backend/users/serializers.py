@@ -71,6 +71,9 @@ class PasswordResetSerializer(serializers.Serializer):
         return data
 
     def save(self, **kwargs):
-        user = self.context['user']
-        user.set_password(self.validated_data['new_password'])
-        user.save()
+        user = self.context.get('user')
+        if user:
+            user.set_password(self.validated_data['new_password'])
+            user.save()
+        else:
+            raise serializers.ValidationError("User not found.")
