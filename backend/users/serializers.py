@@ -23,7 +23,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
 class UserProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
@@ -42,20 +41,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(user_serializer.errors)
 
     def update(self, instance, validated_data):
-        user_data = validated_data.pop('user')
-        user = instance.user
-
-        instance.secret_question = validated_data.get('secret_question', instance.secret_question)
-        instance.secret_answer = validated_data.get('secret_answer', instance.secret_answer)
-        instance.sex = validated_data.get('sex', instance.sex)
-        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
-        instance.name = validated_data.get('name', instance.name)
+        if 'user' in validated_data:
+            user_data = validated_data.pop('user')
+            user_serializer = UserSerializer(instance.user, data=user_data, partial=True)
+            if user_serializer.is_valid():
+                user_serializer.save()
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
         instance.save()
-
-        user_serializer = UserSerializer(user, data=user_data, partial=True)
-        if user_serializer.is_valid():
-            user_serializer.save()
-
         return instance
 
 class PasswordResetRequestSerializer(serializers.Serializer):

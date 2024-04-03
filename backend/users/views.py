@@ -40,7 +40,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        user_data = request.data.pop('user')
+        user_data = request.data.pop('user', None)
         user_serializer = UserSerializer(instance.user, data=user_data, partial=True)
         if user_serializer.is_valid():
             user_serializer.save()
@@ -51,6 +51,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+    
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
     @action(detail=True, methods=['post'])
     def send_phone_verification(self, request, pk=None):
@@ -160,11 +164,3 @@ class LoginAPIView(APIView):
             return Response({'token': token.key}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
-class CurrentUserViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
-
-    def list(self, request):
-        user = request.user
-        user_data = UserSerializer(user).data
-        profile_data = UserProfileSerializer(user.profile).data if hasattr(user, 'profile') else {}
-        return Response({**user_data, **profile_data})

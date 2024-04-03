@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserBodyPart, UserExercise, UserWorkout
+from .models import UserBodyPart, UserExercise, UserWorkout, UserTargetSets
 
 class UserBodyPartSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +20,11 @@ class UserWorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserWorkout
         fields = ['id', 'date', 'exercise', 'sets', 'reps', 'rpe', 'percentage_of_max']
+
+class UserTargetSetsSerializer(serializers.ModelSerializer):
+    body_part = UserBodyPartSerializer(read_only=True)
+
+    class Meta:
+        model = UserTargetSets
+        fields = ['id', 'date', 'body_part_name', 'total_primary_sets', 'total_secondary_sets']
+

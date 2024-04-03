@@ -35,9 +35,25 @@ class UserWorkout(models.Model):
     one_rep_max = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     one_set_max_reps = models.DecimalField(max_digits=6, decimal_places=1, blank=True, null=True)
     percentage_of_max = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    
 
     class Meta:
         ordering = ['-date']
 
     def __str__(self):
         return f"{self.user.username} - {self.date}: {self.exercise.name}"
+
+class UserTargetSets(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateField()
+    body_part = models.ForeignKey(UserBodyPart, on_delete=models.CASCADE)
+    total_primary_sets = models.PositiveIntegerField(default=0)
+    total_secondary_sets = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('user', 'date', 'body_part')
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}: {self.body_part.name} Primary: {self.total_primary_sets} Secondary: {self.total_secondary_sets}"
+ 

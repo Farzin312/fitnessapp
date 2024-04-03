@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 class UserLevel(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='userlevel', on_delete=models.CASCADE, null=True)
     experience_points = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=0)
 

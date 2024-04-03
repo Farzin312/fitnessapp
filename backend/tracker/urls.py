@@ -11,6 +11,7 @@ from level import views as level_views
 from users import views as user_views
 from workout import views as workout_views
 from diet import views as diet_views
+from .views import UserAggregateView
 
 router = DefaultRouter()
 router.register(r'happiness', happiness_views.UserHappinessLogViewSet)
@@ -24,11 +25,12 @@ router.register(r'diet', diet_views.UserDietLogViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('user-aggregate/', UserAggregateView.as_view(), name='user_aggregate'),
     path('api/', include(router.urls)),
     path('login/', user_views.LoginAPIView.as_view(), name='login'),
     path('token-auth/', obtain_auth_token, name='token_auth'), 
     path('userprofiles/', user_views.UserProfileViewSet.as_view({'post': 'create', 'get': 'list'}), name='userprofiles'),
-    path('userprofiles/<int:pk>/', user_views.UserProfileViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='userprofile_detail'),
+    path('userprofiles/<int:pk>/', user_views.UserProfileViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy', 'patch': 'partial_update'}), name='userprofile_detail'),
     path('password-reset/', user_views.password_reset_request, name='password_reset'),
-    path('password/confirm/<int:user_id>/<str:token>/', user_views.password_reset_confirm, name='password_reset_confirm'),
+    path('password/confirm/<int:user_id>/<str:token>/', user_views.password_reset_confirm, name='password_reset_confirm'), 
 ]

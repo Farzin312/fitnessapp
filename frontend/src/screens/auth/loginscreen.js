@@ -15,24 +15,31 @@ const LoginScreen = ({navigation}) => {
     const [loading, setLoading] = useState(false);
     
     const handleLogin = async () => {
-        try {
-        const response = await axios.post('http://127.0.0.1:8000/login/', 
-        {
-            login_input: loginInput,
-            password: password
-        });
-        setLoading(false);
-        const token = response.data.token;
-        navigation.navigate('MainPage', {token: token, loginInput: loginInput })
-    }  catch (error) {
-        if (error.response && error.response.status === 400) {
-            setErrorMessage('Invalid username/email or password.');
-        } else {
-            setErrorMessage('An error occurred. Please try again.');
-        }
-    }
-};
-
+      try {
+          const loginResponse = await axios.post('http://127.0.0.1:8000/login/', {
+              login_input: loginInput,
+              password: password
+          });
+          setLoading(false);
+          const token = loginResponse.data.token;
+          const userResponse = await axios.get('http://127.0.0.1:8000/user-aggregate/', {
+              headers: {
+                  'Authorization': `Token ${token}`,
+              },
+          });
+          navigation.navigate('MainPage', {
+              token: token,
+              userData: userResponse.data
+          });
+      } catch (error) {
+          if (error.response && error.response.status === 400) {
+              setErrorMessage('Invalid username/email or password.');
+          } else {
+              setErrorMessage('An error occurred. Please try again.');
+          }
+      }
+  };
+  
   return (
     <SafeAreaView style={tw`flex-1 relative`} >
       <BackgroundImage />

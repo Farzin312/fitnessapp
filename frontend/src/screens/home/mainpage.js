@@ -1,62 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, Text, View, ScrollView, TouchableOpacity, Modal, Alert, TextInput } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import StyledButton from '../../components/StyledButton';
-import StyledInput from '../../components/StyledInput';
 
 const MainPage = ({ navigation, route }) => {
-  const { token } = route.params;
-  const [userName, setUserName] = useState('');
+  const { token, userData } = route.params;
   const [newUserName, setNewUserName] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(!userData.profile.name);
 
   const handleLogout = () => {
     navigation.navigate('LoginScreen');
   };
 
-  const fetchUserName = async () => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/userprofiles/${profileId}/`, {
-        headers: {
-          'Authorization': `Token ${token}`,
-        },
-      });
-      setUserName(response.data.name);
-      if (!response.data.name) {
-        setIsModalVisible(true);
-      }
-    } catch (error) {
-      console.log(error.response.data);
-    }
-  };
-
   const handleSaveUserName = async () => {
     try {
-      await axios.patch(`http://127.0.0.1:8000/api/userprofiles/${profileId}/`, {
+      await axios.patch(`http://127.0.0.1:8000/userprofiles/${userData.profile.id}/`, {
         name: newUserName,
       }, {
         headers: {
           'Authorization': `Token ${token}`,
         },
       });
-      setUserName(newUserName);
       setIsModalVisible(false);
+      Alert.alert('Success', 'Username saved successfully');
     } catch (error) {
       Alert.alert('Error', 'Failed to save username');
-      console.log(error);
     }
   };
 
-  useEffect(() => {
-    fetchUserName();
-  }, []);
 
   return (
     <SafeAreaView style={tw`flex-1`}>
       <View style={tw`p-4`}>
-        <Text style={tw`text-2xl font-bold`}>Welcome back, {userName || 'User'}!</Text>
+        <Text style={tw`text-2xl font-bold`}>Welcome back, {userData.profile.name || 'User'}!</Text>
       </View>
 
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`p-4`}>
@@ -113,7 +91,8 @@ const MainPage = ({ navigation, route }) => {
         <View style={tw`flex-1 justify-center items-center bg-gray-900 bg-opacity-50`}>
           <View style={tw`bg-white p-4 rounded-lg shadow`}>
             <Text style={tw`text-lg font-semibold`}>Set Your Username</Text>
-            <StyledInput
+            <TextInput
+              style={tw`border border-gray-300 p-2 rounded mt-2`}
               placeholder="Enter your new username"
               value={newUserName}
               onChangeText={setNewUserName}
