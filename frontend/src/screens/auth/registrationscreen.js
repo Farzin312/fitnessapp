@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, ScrollView, TextInput, Alert } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
-import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
 import BackgroundImage from '../../components/BackgroundImage';
 import StyledPicker from '../../components/StyledPicker';
+import BackButton from '../../components/BackButton';
 
 const RegisterScreen = ({ navigation }) => {
     const [date, setDate] = useState(new Date());
@@ -104,15 +104,8 @@ const RegisterScreen = ({ navigation }) => {
             <ScrollView style={tw`flex-1`} contentContainerStyle={tw`items-center`}>
                 <View style={tw`w-full h-full z-50 px-4`}>
                     <View style={tw`w-full h-[4rem]`}>
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            style={tw`h-[3rem] w-[3rem] bg-gray-200 rounded-full items-center justify-center`}
-                            onPress={() => navigation.goBack()}
-                        >
-                            <AntDesign name="arrowleft" size={24} color="black" />
-                        </TouchableOpacity>
+                    <BackButton onPress={() => navigation.goBack()} />
                     </View>
-
                     <View style={tw`w-full mt-4`}>
                         <Text style={tw`text-[2.5rem] font-medium`}>Welcome</Text>
                         <Text style={tw`text-[1.1rem] text-gray-700`}>Create Your Account</Text>

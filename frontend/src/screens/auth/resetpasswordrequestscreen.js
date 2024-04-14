@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, Alert } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
-import { AntDesign } from '@expo/vector-icons';
 import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
+import BackButton from '../../components/BackButton';
 import BackgroundImage from '../../components/BackgroundImage';
 
 const ResetPasswordRequestScreen = ({ navigation }) => {
@@ -35,14 +35,8 @@ const ResetPasswordRequestScreen = ({ navigation }) => {
             <BackgroundImage />
             <View style={tw`w-full h-full z-50`} >
                 <View style={tw`w-full h-[4rem] px-4`} >
-                    <TouchableOpacity activeOpacity={.7} 
-                        style={tw`h-[3rem] w-[3rem] bg-gray-200 rounded-full items-center justify-center`}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <AntDesign name="arrowleft" size={24} color="black" />
-                    </TouchableOpacity>
+                <BackButton onPress={() => navigation.goBack()} />
                 </View>
-
                 <View style={tw`w-full mt-[4rem] px-4`} >
                     <Text style={tw`text-[2.5rem] font-medium`}>Reset Password</Text>
                     <Text style={tw`text-[1.1rem] text-gray-700`}>

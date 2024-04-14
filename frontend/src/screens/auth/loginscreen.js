@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
-import { AntDesign } from '@expo/vector-icons';
 import StyledInput from '../../components/StyledInput';
 import StyledButton from '../../components/StyledButton';
+import BackButton from '../../components/BackButton';
 import BackgroundImage from '../../components/BackgroundImage';
 
 const LoginScreen = ({navigation}) => {
@@ -27,9 +27,12 @@ const LoginScreen = ({navigation}) => {
                   'Authorization': `Token ${token}`,
               },
           });
-          navigation.navigate('MainPage', {
+          navigation.navigate('ThemedScreens', {
+            screen: 'MainPage', 
+            params: {
               token: token,
               userData: userResponse.data
+            }
           });
       } catch (error) {
           if (error.response && error.response.status === 400) {
@@ -45,14 +48,8 @@ const LoginScreen = ({navigation}) => {
       <BackgroundImage />
       <View style={tw`w-full h-full z-50`} >
         <View style={tw`w-full h-[4rem] px-4`} >
-          <TouchableOpacity activeOpacity={.7} 
-            style={tw`h-[3rem] w-[3rem] bg-gray-200 rounded-full items-center justify-center`}
-            onPress={() => navigation.goBack()}
-          >
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
+          <BackButton onPress={() => navigation.goBack()} />
         </View>
-
         <View style={tw`w-full mt-[4rem] px-4`} >
           <Text style={tw`text-[2.5rem] font-medium`}>
             Welcome Back
