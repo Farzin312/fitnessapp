@@ -6,7 +6,7 @@ import { DarkThemeComponents, LightThemeComponents } from '../../components/Them
 
 const Settings = ({ navigation }) => {
     const { isDarkTheme, toggleTheme } = useTheme();
-    const { ToggleThemeButton, BackButton, SmallButton, Background, Section } = isDarkTheme ? DarkThemeComponents : LightThemeComponents;
+    const { ThemedText, ToggleThemeButton, BackButton, SmallButton, Background, Section } = isDarkTheme ? DarkThemeComponents : LightThemeComponents;
 
     const handleLogout = () => {
         navigation.navigate('LoginScreen');
@@ -19,7 +19,7 @@ const Settings = ({ navigation }) => {
                 <BackButton onPress={() => navigation.goBack()} />
             </View>
             <View style={tw`p-4`}>
-                <Text style={tw`text-2xl font-bold`}>Settings</Text>
+                <ThemedText style={tw`text-2xl font-bold`}>Settings</ThemedText>
             </View>
             <ScrollView style={tw`flex-1`} contentContainerStyle={tw`p-4`}>
             

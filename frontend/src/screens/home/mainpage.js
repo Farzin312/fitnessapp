@@ -13,7 +13,7 @@ const MainPage = ({ navigation, route }) => {
   const [newUserName, setNewUserName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(!userData.profile.name);
   const { isDarkTheme } = useTheme(); 
-  const { Section, TextInput, ModalView, TouchOpacity, Background } = isDarkTheme ? DarkThemeComponents : LightThemeComponents;
+  const { Section, ThemedText, TextInput, ModalView, TouchOpacity, Background } = isDarkTheme ? DarkThemeComponents : LightThemeComponents;
 
   const handleSaveUserName = async () => {
     try {
@@ -36,14 +36,14 @@ const MainPage = ({ navigation, route }) => {
     <Background style= {tw`w-full h-full z-50`}>
     <SafeAreaView style={tw`flex-1`}>
         <View style={tw`pt-5 justify-center items-center`}>
-          <Text style={tw`text-3xl font-bold`}>ActiveTrack</Text>
+          <ThemedText style={tw`text-3xl font-bold`}>ActiveTrack</ThemedText>
         </View>
       <View style={tw`w-full h-full z-50`} >
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`p-4`}>
-      <View style={tw`p-4 flex justify-around`}>
-        <TouchOpacity onPress={() => navigation.navigate('PersonalInformation')}>
+      <View style={tw`flex-row flex-wrap justify-center`}>
+        <TouchOpacity onPress={() => navigation.navigate('Profile')}>
           <AntDesign name="profile" size={24} />
-            <Text>Personal Info</Text>
+            <Text>Profile</Text>
         </TouchOpacity>
         <TouchOpacity onPress={() => navigation.navigate('Diet')}>
           <AntDesign name="appstore-o" size={24}/>

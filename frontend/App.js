@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ThemeProvider } from './src/components/ThemeContext';
@@ -8,16 +9,21 @@ import MainPage from './src/screens/home/mainpage';
 import RegisterScreen from './src/screens/auth/registrationscreen';
 import ResetPasswordRequestScreen from './src/screens/auth/resetpasswordrequestscreen';
 import Settings from './src/screens/setting/settings';
+import Profile from './src/screens/profile/profile';
+import Happiness from './src/screens/profile/happiness/happiness';
 
 
 const Stack = createStackNavigator();
 const ThemedStack = createStackNavigator();
+LogBox.ignoreLogs(['ViewPropTypes will be removed', 'PropTypes will be removed'])
 function ThemedScreens() {
   return (
     <ThemeProvider>
       <ThemedStack.Navigator>
         <ThemedStack.Screen name="MainPage" component={MainPage} options={{ headerShown: false }} />
         <ThemedStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+        <ThemedStack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <ThemedStack.Screen name="Happiness" component={Happiness} options={{ headerShown: false }} />
       </ThemedStack.Navigator>
     </ThemeProvider>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, View, Switch } from 'react-native';
+import { TouchableOpacity, Text, View, Switch, TextInput as RNTextInput } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import tw from 'twrnc';
 
@@ -10,11 +10,28 @@ const CommonComponents = {
         </View>
     ),
     
-    TouchOpacity: ({ onPress, style, children }) => (
+    ThemedText: ({ children, style, ...props }) => (
+        <Text style={[style, props]}>{children}</Text>
+    ),
+      
+   
+    TouchOpacity: ({ onPress, style = {}, children }) => (
         <TouchableOpacity 
             onPress={onPress} 
-            style={[tw`flex-row items-center justify-center p-4 rounded-lg shadow m-1`, style]}>
-            {children}
+            style={[tw`w-1/2.5 h-30 justify-center items-center rounded-lg shadow-lg m-1`, style]}>
+            {React.Children.map(children, child => {
+                if (React.isValidElement(child)) {
+                    let extraProps = {};
+                    if (child.type === Text) {
+                        extraProps = { style: [{ color: style.textColor || 'inherit' }, ...(child.props.style || [])] };
+                    }
+                    else if (child.type === AntDesign || (child.type.displayName && child.type.displayName === 'AntDesign')) {
+                        extraProps = { color: style.iconColor || 'inherit' };
+                    }
+                    return React.cloneElement(child, extraProps);
+                }
+                return child;
+            })}
         </TouchableOpacity>
     ),
 
@@ -46,16 +63,16 @@ const CommonComponents = {
 
     ToggleThemeButton: ({ isDarkTheme, onToggle }) => (
         <Switch
-            trackColor={{ false: tw`color-gray-200`, true: tw`color-gray-800` }}
-            thumbColor={isDarkTheme ? tw`color-white` : tw`color-black`}
-            ios_backgroundColor={tw`color-gray-200`}
+            trackColor={{ false: "#d1d5db", true: "#1f2937" }} 
+            thumbColor={isDarkTheme ? "#ffffff" : "#EDAE49"} 
+            ios_backgroundColor="#ffffff" 
             onValueChange={onToggle}
             value={isDarkTheme}
         />
     ),
 
     TextInput: ({ style, ...props }) => (
-        <TextInput
+        <RNTextInput
             style={[tw`border p-2 rounded mt-2`, style]}
             {...props}
         />
@@ -72,6 +89,10 @@ const DarkThemeComponents = {
     Background: props => CommonComponents.Background({
         ...props, style: { backgroundColor: '#333', ...props.style }
     }),
+
+    ThemedText: props => CommonComponents.ThemedText({
+        ...props, style: { color: 'white', ...props.style }
+    }),
     
     BackButton: props => CommonComponents.BackButton({
         ...props, style: { button: tw`bg-gray-800`, iconColor: 'white' }
@@ -82,12 +103,7 @@ const DarkThemeComponents = {
     }),
 
     Section: props => CommonComponents.Section({
-        ...props,
-        style: {
-            container: tw`bg-gray-600`,
-            title: tw`text-white`,
-            description: tw`text-gray-300`
-        }
+        ...props, style: { container: tw`bg-gray-600`,title: tw`text-white`,description: tw`text-gray-300` }
     }),
     ToggleThemeButton: props => CommonComponents.ToggleThemeButton({
         ...props, isDarkTheme: true
@@ -100,15 +116,20 @@ const DarkThemeComponents = {
         ...props, style: tw`bg-gray-800`
     }),
     TouchOpacity: props => CommonComponents.TouchOpacity({
-        ...props, style: tw`bg-gray-600 text-white`
+        ...props, style: { ...tw`bg-gray-600`, textColor: 'white', iconColor: 'white', ...props.style }
     }),
 
 };
+
 
 const LightThemeComponents = {
     ...CommonComponents,
     Background: props => CommonComponents.Background({
         ...props, style: { backgroundColor: '#f9edcc', ...props.style }
+    }),
+
+    ThemedText: props => CommonComponents.ThemedText({
+        ...props, style: { color: 'black', ...props.style }
     }),
     
     BackButton: props => CommonComponents.BackButton({
@@ -121,11 +142,7 @@ const LightThemeComponents = {
 
     Section: props => CommonComponents.Section({
         ...props,
-        style: {
-            container: tw`bg-[rgba(249,223,116,1)]`,
-            title: tw`text-black`,
-            description: tw`text-gray-800`
-        }
+        style: {container: tw`bg-[rgba(249,223,116,1)]`,title: tw`text-black`,description: tw`text-gray-800` }
     }),
 
     ToggleThemeButton: props => CommonComponents.ToggleThemeButton({
@@ -139,7 +156,7 @@ const LightThemeComponents = {
         ...props, style: tw`bg-white`
     }),
     TouchOpacity: props => CommonComponents.TouchOpacity({
-        ...props, style: tw`bg-[rgba(249,223,116,1)]`
+        ...props, style: { ...tw`bg-[rgba(249,223,116,1)]`, textColor: 'black', iconColor: 'black', ...props.style }
     }),
 };
 
